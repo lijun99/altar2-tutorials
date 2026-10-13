@@ -1,8 +1,7 @@
 # AlTar 2 tutorials
 
 Jupyter notebooks for [AlTar 2](https://github.com/lijun99/altar), a Bayesian framework for
-inverse problems. They are rendered at
-[altar2-tutorials.readthedocs.io](https://altar2-tutorials.readthedocs.io); AlTar's own
+inverse problems, stored with their outputs, so they read as they are on GitHub; AlTar's own
 documentation is at [altar2.readthedocs.io](https://altar2.readthedocs.io).
 
 - [An introduction to AlTar/pyre applications: HelloApp](hello/hello.ipynb)
@@ -21,10 +20,10 @@ them from there, or check them all at once against your AlTar:
 ```bash
 python run.py                 # each tutorial in a scratch copy, the repository is left as it is
 python run.py linear          # the notebooks whose paths contain "linear"
-python run.py --update        # in place, keeping the new outputs, which the documentation shows
+python run.py --update        # in place, keeping the new outputs, which GitHub shows
 ```
 
 ## Adding a tutorial
 
-Add a directory with the notebook and its input files, list the notebook in `index.md`, and store
-it with its outputs: `python run.py --update <directory>`.
+Add a directory with the notebook and its input files, list the notebook above, and store it
+with its outputs: `python run.py --update <directory>`.

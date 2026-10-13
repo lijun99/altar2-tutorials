@@ -9,7 +9,7 @@
 """
 Run the tutorials against an installed AlTar. Each tutorial runs in a scratch copy of its
 directory, its notebooks in order, so the repository is left as it is; with --update, they run in
-place instead, and keep their new outputs, which the documentation shows.
+place instead, and keep their new outputs, which GitHub shows.
 
     python run.py                 # all the tutorials
     python run.py linear          # those whose paths contain "linear"
