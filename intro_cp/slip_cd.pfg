@@ -4,7 +4,7 @@
 ; all rights reserved
 ;
 
-; the Cp toy model: the data covariance C_d only
+; the Cp toy model: the data covariance C_d only, no C_p
 slipmodel:
     ; the static model, d = G θ
     model = altar.models.seismic.static
@@ -38,19 +38,19 @@ slipmodel:
                 prior.mean = 10.
                 prior.sigma = 3.
 
-    ; CATMIP, saving the samples to results/slip_cd
+    ; CATMIP with Metropolis walks, each as long as it takes the chains to decorrelate
     controller = altar.bayesian.catmip
     controller:
+        sampler:
+            stepcounter = altar.bayesian.decorrelating
         archiver = altar.bayesian.h5recorder
         archiver:
             output_dir = results/slip_cd
-            output_freq = 100 ; every 100th β step, and the final one
 
     ; run configuration
     job:
         tasks = 1 ; number of tasks per host
         gpus = 0  ; number of gpus per task
         chains = 2**10 ; number of chains per task
-        steps = 2**5 ; Metropolis steps per chain at each β
 
 ; end of file

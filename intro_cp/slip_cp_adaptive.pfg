@@ -4,7 +4,7 @@
 ; all rights reserved
 ;
 
-; the Cp toy model: a fixed misfit covariance C_χ = C_d + C_p, with C_p from the initial model
+; the Cp toy model: C_p computed again from the mean model at each β step
 slipmodel:
     ; the static model, d = G θ
     model = altar.models.seismic.static
@@ -18,7 +18,16 @@ slipmodel:
         dataobs:
             observations = 300
             data_file = static.data.h5
-            cd_file = static.Cx.h5
+            cd_file = static.Cd.h5
+
+        ; C_p from the initial model until β = 0.01, then from the mean of the samples
+        cp = altar.models.cp.adaptive
+        cp:
+            initial_model = static.initialModel.h5
+            initial_until = 0.01
+        ; the covariance of the logarithms of the shear moduli, and the kernels dG/dln(mu_i)
+        cmu_file = static.Cmu.h5
+        kmu_file = static.kernel.h5
 
         ; the strike slips of the 20 patches, the only parameters
         psets_list = [strikeslip]
@@ -38,19 +47,19 @@ slipmodel:
                 prior.mean = 10.
                 prior.sigma = 3.
 
-    ; CATMIP, saving the samples to results/slip_cx
+    ; CATMIP with Metropolis walks, each as long as it takes the chains to decorrelate
     controller = altar.bayesian.catmip
     controller:
+        sampler:
+            stepcounter = altar.bayesian.decorrelating
         archiver = altar.bayesian.h5recorder
         archiver:
-            output_dir = results/slip_cx
-            output_freq = 100 ; every 100th β step, and the final one
+            output_dir = results/slip_cp_adaptive
 
     ; run configuration
     job:
         tasks = 1 ; number of tasks per host
         gpus = 0  ; number of gpus per task
         chains = 2**10 ; number of chains per task
-        steps = 2**5 ; Metropolis steps per chain at each β
 
 ; end of file
