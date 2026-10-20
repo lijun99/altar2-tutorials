@@ -1,0 +1,4 @@
+# the inputs step 1 writes, and the results of step 2: large, and remade by the notebooks
+input/
+results/
+*.log

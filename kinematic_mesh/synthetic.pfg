@@ -1,0 +1,53 @@
+; step 1: the slip history and the waveforms of the true model, from the kinematic model alone, on
+; the cpu in double precision; the priors don't matter here, only the layout of the parameters
+slipmodel:
+    model = altar.models.seismic.kinematicmesh
+    model:
+        case = input
+        mesh = mesh.h5
+        refine = 10
+        velocity_groups = groups/velocity
+        patches = 128
+        green = kinematicG.gf.h5
+        dataobs:
+            observations = 8640
+            data_file = kinematicG.data.h5
+            cd_std = 5.0e-3
+        Nt = 85
+        dt = 1.0
+        psets_list = [across, parallel, risetime, rupturevelocity, hypocenter]
+        psets:
+            across = contiguous
+            parallel = contiguous
+            risetime = contiguous
+            rupturevelocity = contiguous
+            hypocenter = contiguous
+            across:
+                count = {slipmodel.model.patches}
+                prior = gaussian
+                prior.mean = 0
+                prior.sigma = 0.5
+            parallel:
+                count = {slipmodel.model.patches}
+                prior = uniform
+                prior.support = (-1.0, 15.0)
+            risetime:
+                count = {slipmodel.model.patches}
+                prior = uniform
+                prior.support = (1.0, 12.0)
+            rupturevelocity:
+                count = 16
+                prior = uniform
+                prior.support = (1.0, 4.0)
+            hypocenter:
+                count = 2
+                prior = gaussian
+                prior.mean = 0
+                prior.sigma = 100.0
+    forward:
+        theta = input/truth.txt
+        output = input/truth.forward.h5
+    job:
+        tasks = 1
+        gpus = 0
+        precision = float64

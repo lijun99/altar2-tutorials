@@ -1,0 +1,42 @@
+; step 2, the static inversion: the slips from the static data alone, gps and line of sight; the
+; priors of Gombert et al. (2018), slip along the convergence U(-1, 15) m, across it N(0, 0.5) m
+slipmodel:
+    model = altar.models.seismic.static
+    model:
+        case = input
+        patches = 128
+        parameters = 2*{slipmodel.model.patches}
+        green = static.gf.h5
+        dataobs:
+            observations = 188
+            data_file = static.data.h5
+            cd_file = static.Cd.h5
+        ; the columns of the green's functions: across, then along the convergence
+        psets_list = [across, parallel]
+        psets:
+            across = contiguous
+            parallel = contiguous
+            across:
+                count = {slipmodel.model.patches}
+                prior = gaussian
+                prior.mean = 0
+                prior.sigma = 0.5
+            parallel:
+                count = {slipmodel.model.patches}
+                prior = uniform
+                prior.support = (-1.0, 15.0)
+                prior.reparameterize = True
+    controller = altar.bayesian.catmip_hmc
+    controller:
+        sampler:
+            leapfrog_steps = 10
+        archiver = altar.bayesian.h5recorder
+        archiver:
+            output_dir = results/static
+            output_freq = 5
+    job:
+        tasks = 1
+        gpus = 1
+        gpuprecision = float32
+        chains = 4096
+        steps = 20
