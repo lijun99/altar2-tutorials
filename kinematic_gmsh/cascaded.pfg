@@ -1,35 +1,38 @@
-; step 2, the cascaded inversion: the static data at beta = 1 throughout, the waveforms annealed; the
-; slips start from the static posterior; a rise time per patch, a rupture velocity per group of
-; patches, and the hypocenter, with a prior 5 km off the true one, as a catalog's might be
+; step 3, the cascaded inversion: the static data at beta = 1 throughout, the waveforms annealed;
+; the slips, a magnitude and a rake per patch, start from the static posterior; a rise time per
+; patch, a rupture velocity per group of patches, and the hypocenter, with a prior 5 km off the
+; true one, as a catalog's might be
 slipmodel:
     model = altar.models.ensemble
     model:
         case = input
-        patches = 131
-        psets_list = [across, parallel, risetime, rupturevelocity, hypo_strike, hypo_dip]
+        patches = 132
+        ; the slips as a magnitude and a rake from the convergence; the models get the two components
+        polar = [magnitude, rake, parallel, across]
+        psets_list = [magnitude, rake, risetime, rupturevelocity, hypo_strike, hypo_dip]
         psets:
-            across = contiguous
-            parallel = contiguous
+            magnitude = contiguous
+            rake = contiguous
             risetime = contiguous
             rupturevelocity = contiguous
             hypo_strike = contiguous
             hypo_dip = contiguous
-            across:
+            magnitude:
                 count = {slipmodel.model.patches}
                 prep = preset
                 prep.input_file = results/static/step_final.h5
-                prep.dataset = ParameterSets/across
+                prep.dataset = ParameterSets/magnitude
+                prior = uniform
+                prior.support = (0.0, 15.0)
+                prior.reparameterize = True
+            rake:
+                count = {slipmodel.model.patches}
+                prep = preset
+                prep.input_file = results/static/step_final.h5
+                prep.dataset = ParameterSets/rake
                 prior = gaussian
                 prior.mean = 0
-                prior.sigma = 0.5
-            parallel:
-                count = {slipmodel.model.patches}
-                prep = preset
-                prep.input_file = results/static/step_final.h5
-                prep.dataset = ParameterSets/parallel
-                prior = uniform
-                prior.support = (-1.0, 15.0)
-                prior.reparameterize = True
+                prior.sigma = 20
             risetime:
                 count = {slipmodel.model.patches}
                 prior = uniform
@@ -60,7 +63,7 @@ slipmodel:
                 psets_list = [across, parallel]
                 green = static.gf.h5
                 dataobs:
-                    observations = 188
+                    observations = 197
                     data_file = static.data.h5
                     cd_file = static.Cd.h5
             kinematic:

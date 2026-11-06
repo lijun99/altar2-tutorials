@@ -7,7 +7,7 @@ slipmodel:
         mesh = mesh.h5
         refine = 10
         velocity_groups = groups/velocity
-        patches = 131
+        patches = 132
         green = kinematicG.gf.h5
         dataobs:
             observations = 8640

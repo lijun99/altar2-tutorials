@@ -12,9 +12,9 @@ documentation is at [altar2.readthedocs.io](https://altar2.readthedocs.io).
 - Kinematic slip on a triangular mesh: a Pedernales-like synthetic, inverted by least squares and by AlTar
   - [Step 1: the synthetic data and a least squares solution, with CSI](kinematic_mesh/step1_csi.ipynb)
   - [Step 2: the Bayesian inversion with AlTar](kinematic_mesh/step2_altar.ipynb)
-- Kinematic slip on a graded triangular mesh: the same synthetic on a mesh made by gmsh
+- Kinematic slip on a Slab2 slab, meshed by gmsh: the same synthetic on a real subduction geometry
   - [Step 1: the mesh and the synthetic data](kinematic_gmsh/step1_mesh.ipynb)
-  - [Step 2: the Bayesian inversion with AlTar, against the regular mesh](kinematic_gmsh/step2_altar.ipynb)
+  - [Step 2: the Bayesian inversion with AlTar, with polar slips](kinematic_gmsh/step2_altar.ipynb)
 
 ## Running them
 
