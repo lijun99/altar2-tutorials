@@ -5,7 +5,7 @@ slipmodel:
     model:
         case = input
         mesh = mesh.h5
-        refine = 10
+        Nmesh = 10
         velocity_groups = groups/velocity
         patches = 132
         green = kinematicG.gf.h5

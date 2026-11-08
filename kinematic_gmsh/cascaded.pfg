@@ -70,7 +70,7 @@ slipmodel:
                 case = {slipmodel.model.case}
                 psets_list = [across, parallel, risetime, rupturevelocity, hypo_strike, hypo_dip]
                 mesh = mesh.h5
-                refine = 10
+                Nmesh = 10
                 velocity_groups = groups/velocity
                 green = kinematicG.gf.h5
                 dataobs:
